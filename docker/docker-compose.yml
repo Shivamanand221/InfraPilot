@@ -1,0 +1,37 @@
+version: '3.9'
+services:
+  strapi:
+    image: shivamanand221/strapi:latest
+    container_name: strapi_container
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: strapi_db
+      DATABASE_USERNAME: strapi
+      DATABASE_PASSWORD: strapi
+
+      APP_KEYS: tFMk5759axKkJge7neEr9A==,arM0NEZgNQtpGWeT4bJkQA==,gdnKF5+SDEVnNLQtNHHNbg==,QtyTGYabAeOd+i7rdct99Q==
+      API_TOKEN_SALT: yH4bn+3yrCoGRPrRCnejFw==
+      ADMIN_JWT_SECRET: PPzanHTwCp5TBTuhP7AREUVu04blQznHbqhC8bkLHAU=
+      TRANSFER_TOKEN_SALT: wnHSZ0LZiCBrPzoaLECwWg==
+      ENCRYPTION_KEY: Tcc8R8AlDw70myo1yRH2cCIzRDVRcl5aSkLw9ebWmtQ=
+      JWT_SECRET: RdNSlWBAh+Je2KKv2QBxVoq4eQQSOfYZYk/MbqKuCKA=
+    ports:
+      - "1337:1337"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:15
+    container_name: strapi_postgres
+    environment:
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi
+      POSTGRES_DB: strapi_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data: {}
