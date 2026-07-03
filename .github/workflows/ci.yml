@@ -31,3 +31,15 @@ jobs:
           tags: |
             shivamanand221/strapi:latest
             shivamanand221/strapi:${{ github.sha}}
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            cd ~/Strapi_Project/docker
+            docker-compose pull
+            docker-compose up -d
+            docker image prune -f
