@@ -2,12 +2,9 @@
 
 set -e
 
-# -------------------------------------------------
-# Log bootstrap output
-# -------------------------------------------------
 exec > >(tee /var/log/user-data.log) 2>&1
 
-echo "========== EC2 Bootstrap Started =========="
+echo "========== EC2 User Data Started =========="
 
 # -------------------------------------------------
 # Update packages
@@ -60,4 +57,4 @@ cd /home/ec2-user/Strapi_Project/docker
 docker compose pull
 docker compose up -d
 
-echo "========== EC2 Bootstrap Completed =========="
+echo "========== EC2 User Data Completed =========="
