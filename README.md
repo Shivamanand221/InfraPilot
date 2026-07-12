@@ -77,12 +77,6 @@ npm start
 npm run build:prod
 ```
 
-### Running tests
-
-```bash
-npm test
-```
-
 ### Infrastructure deployment
 
 ```bash
@@ -113,32 +107,6 @@ InfraPilot/
 └── dist/              # Compiled output
 ```
 
-## 🔗 API Endpoints
-
-### Infrastructure Management
-- `GET /api/infrastructure` - List all infrastructure resources
-- `POST /api/infrastructure/deploy` - Deploy new infrastructure
-- `PUT /api/infrastructure/:id` - Update infrastructure
-- `DELETE /api/infrastructure/:id` - Delete infrastructure
-
-### Automation
-- `POST /api/automation/execute` - Execute automation workflows
-- `GET /api/automation/status/:id` - Get workflow status
-- `GET /api/automation/logs/:id` - Get workflow logs
-
-## 🧪 Testing
-
-```bash
-# Run all tests
-npm test
-
-# Run tests with coverage
-npm run test:coverage
-
-# Run specific test suite
-npm test -- tests/services
-```
-
 ## 📝 Environment Variables
 
 | Variable | Description | Required |
@@ -150,38 +118,9 @@ npm test -- tests/services
 | `LOG_LEVEL` | Logging level (debug, info, warn, error) | No |
 | `PORT` | Application port | No |
 
-## 🤝 Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🙏 Acknowledgments
-
-- Terraform documentation for IaC best practices
-- Cloud provider documentation for API integration
-- [Strapi](https://strapi.io/) - Open source headless CMS
-
 ## 📧 Contact
 
 For questions or support, please open an issue on the [GitHub repository](https://github.com/Shivamanand221/InfraPilot/issues).
-
-## 🗺️ Roadmap
-
-- [ ] Support for additional cloud providers (Alibaba Cloud, DigitalOcean)
-- [ ] Enhanced monitoring dashboard
-- [ ] Automated cost optimization recommendations
-- [ ] Multi-region deployment capabilities
-- [ ] Advanced RBAC and audit logging
-- [ ] Helm chart integration for Kubernetes deployments
 
 ---
 
