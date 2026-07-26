@@ -23,7 +23,7 @@ module "ec2" {
   ami_id            = var.ami_id
   instance_type     = var.instance_type
   subnet_id         = module.vpc.public_subnet_ids[0]
-  security_group_id = module.security_group.security_group_id
+  security_group_id = module.security_group.app_security_group_id
   key_name          = var.key_name
   environment       = var.environment
   user_data         = file("${path.root}/../../../Scripts/user_data.sh")
