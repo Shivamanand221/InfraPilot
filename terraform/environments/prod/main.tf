@@ -28,3 +28,10 @@ module "ec2" {
   environment       = var.environment
   user_data         = file("${path.root}/../../../Scripts/user_data.sh")
 }
+
+module "nat_gateway" {
+  source                     = "../../modules/nat-gateway"
+  environment                = var.environment
+  public_subnet_id           = module.vpc.public_subnet_ids[0]
+  private_app_route_table_id = module.vpc.private_app_route_table_id
+}
