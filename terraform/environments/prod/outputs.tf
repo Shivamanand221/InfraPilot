@@ -7,21 +7,18 @@ output "public_subnet_id" {
 }
 
 output "alb_security_group_id" {
-  description = "ALB Security Group ID"
-  value       = module.security_group.alb_security_group_id
+  value = module.security_group.alb_security_group_id
 }
 
 output "app_security_group_id" {
-  description = "Application Security Group ID"
-  value       = module.security_group.app_security_group_id
+  value = module.security_group.app_security_group_id
 }
 
 output "rds_security_group_id" {
-  description = "RDS Security Group ID"
-  value       = module.security_group.rds_security_group_id
+  value = module.security_group.rds_security_group_id
 }
 
-output "instance_id" {
+/*output "instance_id" {
   value = module.ec2.instance_id
 }
 
@@ -31,4 +28,12 @@ output "instance_public_ip" {
 
 output "public_dns" {
   value = module.ec2.instance_public_dns
+}*/
+
+output "db_endpoint" {
+  value = module.rds.db_endpoint
+}
+
+output "db_port" {
+  value = module.rds.db_port
 }
