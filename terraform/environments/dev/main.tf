@@ -26,5 +26,5 @@ module "ec2" {
   security_group_id = module.security_group.app_security_group_id
   key_name          = var.key_name
   environment       = var.environment
-  user_data         = file("${path.root}/../../../Scripts/user_data.sh")
+  user_data         = file("${path.root}/../../../Scripts/dev/user_data.sh")
 }
