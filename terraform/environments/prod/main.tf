@@ -57,3 +57,8 @@ module "rds" {
   allocated_storage = var.allocated_storage
   instance_class    = var.instance_class
 }
+
+module "ecr" {
+  source      = "../../modules/ecr"
+  environment = var.environment
+}

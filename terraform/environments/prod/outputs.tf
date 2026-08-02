@@ -37,3 +37,7 @@ output "db_endpoint" {
 output "db_port" {
   value = module.rds.db_port
 }
+
+output "repository_url" {
+  value = module.ecr.repository_url
+}
