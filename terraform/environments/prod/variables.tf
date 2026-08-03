@@ -77,3 +77,18 @@ variable "allocated_storage" {
 variable "instance_class" {
   type = string
 }
+
+
+#asg variables
+
+variable "min_size" {
+  type = number
+}
+
+variable "max_size" {
+  type = number
+}
+
+variable "desired_capacity" {
+  type = number
+}

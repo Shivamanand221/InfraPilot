@@ -62,3 +62,21 @@ module "ecr" {
   source      = "../../modules/ecr"
   environment = var.environment
 }
+
+module "auto_scaling_group" {
+  source = "../../modules/auto-scaling"
+
+  environment = var.environment
+
+  min_size = var.min_size
+  max_size = var.max_size
+  desired_capacity = var.desired_capacity
+
+  launch_template_id = module.launch_template.launch_template_id
+  launch_template_version = module.launch_template.launch_template_latest_version
+
+  private_app_subnet_ids = module.vpc.private_app_subnet_ids
+
+  target_group_arn = module.alb.target_group_arn
+
+}
