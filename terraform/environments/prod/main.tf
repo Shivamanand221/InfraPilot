@@ -23,17 +23,6 @@ module "security_group" {
   environment = var.environment
 }
 
-/*module "ec2" {
-  source            = "../../modules/ec2"
-  ami_id            = var.ami_id
-  instance_type     = var.instance_type
-  subnet_id         = module.vpc.public_subnet_ids[0]
-  security_group_id = module.security_group.app_security_group_id
-  key_name          = var.key_name
-  environment       = var.environment
-  user_data         = file("${path.root}/../../../Scripts/user_data.sh")
-}*/
-
 module "nat_gateway" {
   source                     = "../../modules/nat-gateway"
   environment                = var.environment
@@ -58,9 +47,41 @@ module "rds" {
   instance_class    = var.instance_class
 }
 
+module "iam" {
+  source = "../../modules/iam"
+  environment = var.environment
+}
+
 module "ecr" {
   source      = "../../modules/ecr"
   environment = var.environment
+}
+
+module "launch_template" {
+
+  source = "../../modules/launch_template"
+
+  environment = var.environment
+
+  ami_id = var.ami_id
+  instance_type = var.instance_type
+
+  app_security_group_id = module.security_group.app_security_group_id
+  iam_instance_profile_name = module.iam.instance_profile_name
+
+  user_data = file("${path.root}/../../../Scripts/prod/user_data")
+
+}
+
+module "alb" {
+  source = "../../modules/alb"
+
+  environment = var.environment
+
+  vpc_id = module.vpc.vpc_id
+  public_subnet_ids = module.vpc.public_subnet_ids
+
+  alb_security_group_id = module.security_group.alb_security_group_id
 }
 
 module "auto_scaling_group" {
