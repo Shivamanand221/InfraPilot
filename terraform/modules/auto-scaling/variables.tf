@@ -27,5 +27,5 @@ variable "private_app_subnet_ids" {
 }
 
 variable "target_group_arn" {
-    type = string
+  type = string
 }

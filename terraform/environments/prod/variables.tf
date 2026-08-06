@@ -92,9 +92,3 @@ variable "max_size" {
 variable "desired_capacity" {
   type = number
 }
-
-#alb variables
-
-variable "" {
-  
-}

@@ -48,7 +48,7 @@ module "rds" {
 }
 
 module "iam" {
-  source = "../../modules/iam"
+  source      = "../../modules/iam"
   environment = var.environment
 }
 
@@ -59,18 +59,19 @@ module "ecr" {
 
 module "launch_template" {
 
-  source = "../../modules/launch_template"
+  source = "../../modules/launch-template"
 
   environment = var.environment
 
-  ami_id = var.ami_id
+  ami_id        = var.ami_id
   instance_type = var.instance_type
 
-  app_security_group_id = module.security_group.app_security_group_id
+  app_security_group_id     = module.security_group.app_security_group_id
   iam_instance_profile_name = module.iam.instance_profile_name
 
-  user_data = file("${path.root}/../../../Scripts/prod/user_data")
-
+  user_data = templatefile("${path.root}/../../../Scripts/prod/user_data.sh", {
+    repository_url = module.ecr.repository_url
+  })
 }
 
 module "alb" {
@@ -78,7 +79,7 @@ module "alb" {
 
   environment = var.environment
 
-  vpc_id = module.vpc.vpc_id
+  vpc_id            = module.vpc.vpc_id
   public_subnet_ids = module.vpc.public_subnet_ids
 
   alb_security_group_id = module.security_group.alb_security_group_id
@@ -89,11 +90,11 @@ module "auto_scaling_group" {
 
   environment = var.environment
 
-  min_size = var.min_size
-  max_size = var.max_size
+  min_size         = var.min_size
+  max_size         = var.max_size
   desired_capacity = var.desired_capacity
 
-  launch_template_id = module.launch_template.launch_template_id
+  launch_template_id      = module.launch_template.launch_template_id
   launch_template_version = module.launch_template.launch_template_latest_version
 
   private_app_subnet_ids = module.vpc.private_app_subnet_ids

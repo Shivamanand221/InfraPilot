@@ -1,30 +1,30 @@
 resource "aws_lb" "this" {
 
-    name = "${var.environment}-alb"
+  name = "${var.environment}-alb"
 
-    load_balancer_type = "application"
-    internal = false
-    security_groups = [var.alb_security_group_id]
+  load_balancer_type = "application"
+  internal           = false
+  security_groups    = [var.alb_security_group_id]
 
-    subnets = var.public_subnet_ids
+  subnets = var.public_subnet_ids
 
-    tags = {
-        Name        = "${var.environment}-alb"
-        Environment = var.environment
-    }
+  tags = {
+    Name        = "${var.environment}-alb"
+    Environment = var.environment
+  }
 
-    enable_deletion_protection = false
+  enable_deletion_protection = false
 }
 
 resource "aws_lb_target_group" "this" {
-  
-  name     = "${var.environment}-tg"
+
+  name = "${var.environment}-tg"
 
   vpc_id = var.vpc_id
 
   target_type = "instance"
 
-  port = 80
+  port     = 80
   protocol = "HTTP"
 
   health_check {

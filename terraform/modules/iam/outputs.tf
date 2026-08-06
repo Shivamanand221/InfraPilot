@@ -1,6 +1,6 @@
 output "instance_profile_name" {
   description = "The name of the instance profile"
-  value       = aws_iam_instance_profile.instance_profile.name
+  value       = aws_iam_instance_profile.this.name
 }
 
 output "role_name" {

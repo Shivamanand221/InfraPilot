@@ -38,5 +38,5 @@ resource "aws_iam_instance_profile" "this" {
   tags = {
     Name        = "${var.environment}-instance-profile"
     Environment = var.environment
-  } 
+  }
 }
