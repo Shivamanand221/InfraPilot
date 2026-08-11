@@ -108,3 +108,12 @@ module "auto_scaling_group" {
   target_group_arn = module.alb.target_group_arn
 
 }
+
+module "code_deploy" {
+  source = "../../modules/code-deploy"
+
+  environment = var.environment
+
+  autoscaling_group_name = module.auto_scaling_group.auto_scaling_group_name
+  target_group_name      = module.alb.target_group_name
+}
