@@ -22,4 +22,10 @@ docker run -d \
     --name strapi \
     --restart unless-stopped \
     -p 80:1337 \
+    -e DATABASE_CLIENT=postgres \
+    -e DATABASE_HOST=${db_host} \
+    -e DATABASE_PORT=${db_port} \
+    -e DATABASE_NAME=${db_name} \
+    -e DATABASE_USERNAME=${db_username} \
+    -e DATABASE_PASSWORD=${db_password} \
     ${repository_url}:latest

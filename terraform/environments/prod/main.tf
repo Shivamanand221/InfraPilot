@@ -71,6 +71,12 @@ module "launch_template" {
 
   user_data = templatefile("${path.root}/../../../Scripts/prod/user_data.sh", {
     repository_url = module.ecr.repository_url
+
+    db_host     = module.rds.db_endpoint
+    db_port     = module.rds.db_port
+    db_name     = module.rds.db_name
+    db_username = var.db_username
+    db_password = var.db_password
   })
 }
 
