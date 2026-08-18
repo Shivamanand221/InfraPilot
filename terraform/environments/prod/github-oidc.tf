@@ -53,3 +53,64 @@ resource "aws_iam_role" "github_actions" {
     Environment = var.environment
   }
 }
+
+resource "aws_iam_role_policy" "github_actions_ecr" {
+  name = "${var.environment}-github-actions-ecr"
+  role = aws_iam_role.github_actions.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Effect = "Allow"
+
+        Action = [
+          "ecr:GetAuthorizationToken"
+        ]
+
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:CompleteLayerUpload",
+          "ecr:InitiateLayerUpload",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart",
+          "ecr:BatchGetImage"
+        ]
+
+        Resource = var.ecr_repository_arn
+      }
+    ]
+  })
+}
+
+
+resource "aws_iam_role_policy" "github_actions_codedeploy" {
+  name = "${var.environment}-github-actions-codedeploy"
+  role = aws_iam_role.github_actions.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Effect = "Allow"
+
+        Action = [
+          "codedeploy:CreateDeployment",
+          "codedeploy:GetDeployment",
+          "codedeploy:GetDeploymentConfig",
+          "codedeploy:GetApplication",
+          "codedeploy:GetDeploymentGroup"
+        ]
+
+        Resource = "*"
+      }
+    ]
+  })
+}

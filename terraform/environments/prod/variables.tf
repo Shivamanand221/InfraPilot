@@ -121,3 +121,7 @@ variable "encryption_key" {
   type      = string
   sensitive = true
 }
+
+variable "ecr_repository_arn" {
+  type = string
+}
