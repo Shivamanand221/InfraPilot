@@ -52,11 +52,6 @@ module "iam" {
   environment = var.environment
 }
 
-module "ecr" {
-  source      = "../../modules/ecr"
-  environment = var.environment
-}
-
 module "launch_template" {
 
   source = "../../modules/launch-template"
@@ -70,13 +65,18 @@ module "launch_template" {
   iam_instance_profile_name = module.iam.instance_profile_name
 
   user_data = templatefile("${path.root}/../../../Scripts/prod/user_data.sh", {
-    repository_url = module.ecr.repository_url
+    repository_url = var.repository_url
 
-    db_host     = module.rds.db_endpoint
+    db_host     = module.rds.db_address
     db_port     = module.rds.db_port
     db_name     = module.rds.db_name
     db_username = var.db_username
     db_password = var.db_password
+    app_keys = jsonencode(var.app_keys)
+    admin_jwt_secret    = var.admin_jwt_secret
+    api_token_salt      = var.api_token_salt
+    transfer_token_salt = var.transfer_token_salt
+    encryption_key      = var.encryption_key
   })
 }
 

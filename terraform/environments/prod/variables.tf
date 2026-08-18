@@ -92,3 +92,32 @@ variable "max_size" {
 variable "desired_capacity" {
   type = number
 }
+
+variable "repository_url" {
+  type = string
+}
+
+variable "app_keys" {
+  type      = list(string)
+  sensitive = true
+}
+
+variable "admin_jwt_secret" {
+  type      = string
+  sensitive = true
+}
+
+variable "api_token_salt" {
+  type      = string
+  sensitive = true
+}
+
+variable "transfer_token_salt" {
+  type      = string
+  sensitive = true
+}
+
+variable "encryption_key" {
+  type      = string
+  sensitive = true
+}

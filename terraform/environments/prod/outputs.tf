@@ -30,14 +30,10 @@ output "public_dns" {
   value = module.ec2.instance_public_dns
 }*/
 
-output "db_endpoint" {
-  value = module.rds.db_endpoint
+output "db_address" {
+  value = module.rds.db_address
 }
 
 output "db_port" {
   value = module.rds.db_port
-}
-
-output "repository_url" {
-  value = module.ecr.repository_url
 }
