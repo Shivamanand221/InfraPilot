@@ -62,7 +62,6 @@ jobs:
           cp stop.sh deploy-bundle/
           cp validate.sh deploy-bundle/
           cp image.env deploy-bundle/
-
           cd deploy-bundle
           zip -r ../deployment.zip .
 
