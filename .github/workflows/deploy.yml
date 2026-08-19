@@ -58,10 +58,10 @@ jobs:
         run: |
           mkdir deploy-bundle
 
-          cp appspec.yml deploy-bundle/
-          cp start.sh deploy-bundle/
-          cp stop.sh deploy-bundle/
-          cp validate.sh deploy-bundle/
+          cp Scripts/prod/appspec.yml deploy-bundle/
+          cp Scripts/prod/start.sh deploy-bundle/
+          cp Scripts/prod/stop.sh deploy-bundle/
+          cp Scripts/prod/validate.sh deploy-bundle/
           cp image.env deploy-bundle/
           cd deploy-bundle
           zip -r ../deployment.zip .
