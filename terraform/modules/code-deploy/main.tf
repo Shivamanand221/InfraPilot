@@ -33,6 +33,39 @@ resource "aws_codedeploy_app" "this" {
   compute_platform = "Server"
 }
 
+data "aws_caller_identity" "current" {}
+
+resource "aws_iam_role_policy" "launch_template_permissions" {
+  name = "${var.environment}-codedeploy-launch-template"
+  role = aws_iam_role.this.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Effect = "Allow"
+
+        Action = [
+          "ec2:RunInstances",
+          "ec2:CreateTags"
+        ]
+
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+
+        Action = [
+          "iam:PassRole"
+        ]
+
+        Resource = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.environment}-ec2-role"
+      }
+    ]
+  })
+}
+
 resource "aws_codedeploy_deployment_group" "this" {
     app_name = aws_codedeploy_app.this.name
     deployment_group_name = "${var.environment}-deployment-group"
