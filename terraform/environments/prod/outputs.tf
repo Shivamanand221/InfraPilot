@@ -37,3 +37,7 @@ output "db_address" {
 output "db_port" {
   value = module.rds.db_port
 }
+
+output "codedeploy_bucket_name" {
+  value = aws_s3_bucket.codedeploy.bucket
+}

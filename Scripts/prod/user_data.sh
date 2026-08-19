@@ -28,11 +28,22 @@ sudo systemctl start codedeploy-agent
 # Strapi configuration
 sudo tee /etc/strapi.env > /dev/null <<EOF
 ECR_REPOSITORY_URL=${repository_url}
+
+DATABASE_CLIENT=postgres
 DATABASE_HOST=${db_host}
 DATABASE_PORT=${db_port}
 DATABASE_NAME=${db_name}
 DATABASE_USERNAME=${db_username}
 DATABASE_PASSWORD=${db_password}
+
+DATABASE_SSL=true
+DATABASE_SSL_REJECT_UNAUTHORIZED=false
+
+APP_KEYS='${app_keys}'
+ADMIN_JWT_SECRET='${admin_jwt_secret}'
+API_TOKEN_SALT='${api_token_salt}'
+TRANSFER_TOKEN_SALT='${transfer_token_salt}'
+ENCRYPTION_KEY='${encryption_key}'
 EOF
 
 sudo chmod 600 /etc/strapi.env
@@ -65,17 +76,5 @@ docker run -d \
   --name strapi \
   --restart unless-stopped \
   -p 80:1337 \
-  -e DATABASE_CLIENT=postgres \
-  -e DATABASE_HOST=${db_host} \
-  -e DATABASE_PORT=${db_port} \
-  -e DATABASE_NAME=${db_name} \
-  -e DATABASE_USERNAME=${db_username} \
-  -e DATABASE_PASSWORD=${db_password} \
-  -e DATABASE_SSL=true \
-  -e DATABASE_SSL_REJECT_UNAUTHORIZED=false \
-  -e APP_KEYS='${app_keys}' \
-  -e ADMIN_JWT_SECRET='${admin_jwt_secret}' \
-  -e API_TOKEN_SALT='${api_token_salt}' \
-  -e TRANSFER_TOKEN_SALT='${transfer_token_salt}' \
-  -e ENCRYPTION_KEY='${encryption_key}' \
+  --env-file /etc/strapi.env \
   ${repository_url}:v1

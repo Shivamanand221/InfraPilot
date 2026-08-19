@@ -1,0 +1,84 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: prod-ecr-repo
+  CODEDEPLOY_APP: prod-codedeploy-app
+  CODEDEPLOY_GROUP: prod-deployment-group
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set image tag
+        run: |
+          echo "IMAGE_TAG=${GITHUB_SHA}" >> $GITHUB_ENV
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t ${{ env.ECR_REPOSITORY }}:${IMAGE_TAG} .
+
+      - name: Tag Docker image
+        run: |
+          docker tag \
+            ${{ env.ECR_REPOSITORY }}:${IMAGE_TAG} \
+            ${{ secrets.ECR_REPOSITORY_URL }}:${IMAGE_TAG}
+
+      - name: Push Docker image
+        run: |
+          docker push \
+            ${{ secrets.ECR_REPOSITORY_URL }}:${IMAGE_TAG}
+
+      - name: Create deployment bundle
+        run: |
+          echo "IMAGE_TAG=${IMAGE_TAG}" > image.env
+
+          mkdir -p deploy-bundle
+
+          cp appspec.yml deploy-bundle/
+          cp start.sh deploy-bundle/
+          cp stop.sh deploy-bundle/
+          cp validate.sh deploy-bundle/
+          cp image.env deploy-bundle/
+
+      - name: Create deployment archive
+        run: |
+          cd deploy-bundle
+          zip -r ../deployment.zip .
+
+      - name: Upload deployment bundle
+        run: |
+          aws s3 cp deployment.zip \
+            s3://${{ secrets.CODEDEPLOY_BUCKET }}/deployment-${IMAGE_TAG}.zip
+
+      - name: Create CodeDeploy deployment
+        run: |
+          aws deploy create-deployment \
+            --application-name "${CODEDEPLOY_APP}" \
+            --deployment-group-name "${CODEDEPLOY_GROUP}" \
+            --s3-location bucket=${{ secrets.CODEDEPLOY_BUCKET }},key=deployment-${IMAGE_TAG}.zip,bundleType=zip \
+            --deployment-config-name CodeDeployDefault.AllAtOnce

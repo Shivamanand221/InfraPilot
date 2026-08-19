@@ -114,3 +114,26 @@ resource "aws_iam_role_policy" "github_actions_codedeploy" {
     ]
   })
 }
+
+resource "aws_iam_role_policy" "github_actions_s3" {
+  name = "${var.environment}-github-actions-s3"
+  role = aws_iam_role.github_actions.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Effect = "Allow"
+
+        Action = [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:GetObjectVersion"
+        ]
+
+        Resource = "${aws_s3_bucket.codedeploy.arn}/*"
+      }
+    ]
+  })
+}
