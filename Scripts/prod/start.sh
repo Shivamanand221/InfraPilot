@@ -16,6 +16,8 @@ aws ecr get-login-password --region "${aws_region}" \
 
 docker pull "${ECR_REPOSITORY_URL}:${IMAGE_TAG}"
 
+docker rm -f strapi 2>/dev/null || true
+
 docker run -d \
     --name strapi \
     --restart unless-stopped \
