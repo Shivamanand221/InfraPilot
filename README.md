@@ -5,4 +5,3 @@ An intelligent infrastructure automation platform that combines cloud infrastruc
 **Note**: This project includes a cloned [Strapi](https://strapi.io/) instance in the `Strapi/` directory for headless CMS capabilities. See `Strapi/README.md` for Strapi-specific documentation.
 
 ## 🚀 Features
-#test deployment
