@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source /etc/strapi.env
-source ./image.env
+source "$(dirname "$0")/image.env"
 
 aws_region="us-east-1"
 
