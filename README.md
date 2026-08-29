@@ -116,30 +116,56 @@ Application EC2 instances run in private application subnets, while the load bal
 ## Project Structure
 
 ```text
-Terraform
-├── environments/
-|   └── dev/
-│   └── prod/
-├── modules/
-│   ├── vpc/
-│   ├── security_group/
-│   ├── launch_template/
-│   ├── auto_scaling_group/
-│   ├── alb/
-│   ├── rds/
-│   └── iam/
+InfraPilot/
+├── .github/
+│   └── workflows/
+│       ├── ci.yml
+│       └── deploy.yml
+│
+├── docker/
+│   ├── nginx/
+│   │   └── default.conf
+│   └── docker-compose.yml
+│
 ├── Scripts/
+│   ├── dev/
+│   │   ├── update-github-secrets.sh
+│   │   └── user_data.sh
+│   │
 │   └── prod/
 │       ├── appspec.yml
 │       ├── start.sh
 │       ├── stop.sh
+│       ├── user_data.sh
 │       └── validate.sh
+│
 ├── Strapi/
-│   └── Dockerfile
-└── .github/
-    └── workflows/
-        └── deploy-production.yml
+│   └── ...
+│
+├── terraform/
+│   ├── environments/
+│   │   ├── dev/
+│   │   └── prod/
+│   │
+│   └── modules/
+│       ├── alb/
+│       ├── auto-scaling/
+│       ├── code-deploy/
+│       ├── ec2/
+│       ├── iam/
+│       ├── launch-template/
+│       ├── nat-gateway/
+│       ├── rds/
+│       ├── security-group/
+│       └── vpc/
+│
+├── .gitignore
+├── README.md
+├── service.conf.lock
+├── system.conf.lock
+└── terraform.tfstate
 ```
+
 
 ## Terraform
 
