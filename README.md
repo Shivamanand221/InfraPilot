@@ -116,29 +116,56 @@ Application EC2 instances run in private application subnets, while the load bal
 ## Project Structure
 
 ```text
-.
-├── environments/
-│   └── prod/
-├── modules/
-│   ├── vpc/
-│   ├── security_group/
-│   ├── launch_template/
-│   ├── auto_scaling_group/
-│   ├── alb/
-│   ├── rds/
-│   └── iam/
+InfraPilot/
+├── .github/
+│   └── workflows/
+│       ├── ci.yml
+│       └── deploy.yml
+│
+├── docker/
+│   ├── nginx/
+│   │   └── default.conf
+│   └── docker-compose.yml
+│
 ├── Scripts/
+│   ├── dev/
+│   │   ├── update-github-secrets.sh
+│   │   └── user_data.sh
+│   │
 │   └── prod/
 │       ├── appspec.yml
 │       ├── start.sh
 │       ├── stop.sh
+│       ├── user_data.sh
 │       └── validate.sh
+│
 ├── Strapi/
-│   └── Dockerfile
-└── .github/
-    └── workflows/
-        └── deploy-production.yml
+│   └── ...
+│
+├── terraform/
+│   ├── environments/
+│   │   ├── dev/
+│   │   └── prod/
+│   │
+│   └── modules/
+│       ├── alb/
+│       ├── auto-scaling/
+│       ├── code-deploy/
+│       ├── ec2/
+│       ├── iam/
+│       ├── launch-template/
+│       ├── nat-gateway/
+│       ├── rds/
+│       ├── security-group/
+│       └── vpc/
+│
+├── .gitignore
+├── README.md
+├── service.conf.lock
+├── system.conf.lock
+└── terraform.tfstate
 ```
+
 
 ## Terraform
 
@@ -470,17 +497,6 @@ available
 
 can appear during the lifecycle.
 
-## Lessons Learned
-
-- Terraform is declarative, but AWS operations are asynchronous.
-- ASG destruction can take several minutes because instances must terminate.
-- CodeDeploy Blue/Green deployments can create temporary ASGs.
-- EC2 ENIs can prevent subnet deletion while instances are still attached.
-- Versioned S3 buckets require version/delete-marker cleanup.
-- Deployment artifacts must contain all runtime information required by the host.
-- A successful CI build does not guarantee a successful application deployment.
-- Repeated successful deployments are stronger validation than a single successful run.
-
 ## Deployment Checklist
 
 ### Before deployment
@@ -521,20 +537,6 @@ can appear during the lifecycle.
 [ ] Original fleet is terminated
 [ ] No unexpected deployment fleet remains
 ```
-
-## Future Improvements
-
-- Automated rollback testing
-- Stronger `ValidateService` health checks
-- AWS Secrets Manager or SSM Parameter Store
-- CloudWatch monitoring and centralized logs
-- ALB, EC2, and RDS alarms
-- Docker image vulnerability scanning
-- Terraform CI validation and plan checks
-- Deployment notifications
-- Automated ECR/S3 artifact retention
-- Cost monitoring and optimization
-- Safer database migration handling
 
 ## Project Status
 
