@@ -3,14 +3,6 @@ resource "aws_security_group" "alb" {
   description = "Security group for ${var.environment} alb"
   vpc_id      = var.vpc_id
 
-  # ingress {
-  #   description = "SSH"
-  #   from_port   = 22
-  #   to_port     = 22
-  #   protocol    = "tcp"
-  #   cidr_blocks = ["0.0.0.0/0"]
-  # }
-
   ingress {
     description = "HTTP"
     from_port   = 80
@@ -64,7 +56,19 @@ resource "aws_security_group" "app" {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
-    security_groups = [aws_security_group.alb.id]
+    cidr_blocks = var.environment == "dev" ? ["0.0.0.0/0"] : []
+
+    security_groups = var.environment == "prod" ? [
+      aws_security_group.alb.id
+    ] : []
+  }
+
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {

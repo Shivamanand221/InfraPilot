@@ -18,6 +18,11 @@ module "security_group" {
   environment = var.environment
 }
 
+module "iam" {
+  source      = "../../modules/iam"
+  environment = var.environment
+}
+
 module "ec2" {
   source            = "../../modules/ec2"
   ami_id            = var.ami_id
@@ -26,5 +31,8 @@ module "ec2" {
   security_group_id = module.security_group.app_security_group_id
   key_name          = var.key_name
   environment       = var.environment
-  user_data         = file("${path.root}/../../../Scripts/dev/user_data.sh")
+
+  instance_profile_name = module.iam.instance_profile_name
+
+  user_data = file("${path.root}/../../../Scripts/dev/user_data.sh")
 }

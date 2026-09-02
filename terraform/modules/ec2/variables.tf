@@ -26,3 +26,7 @@ variable "user_data" {
   type    = string
   default = null
 }
+
+variable "instance_profile_name" {
+  type = string
+}

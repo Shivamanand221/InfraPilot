@@ -3,7 +3,7 @@
 set -e  
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TF_DIR="$SCRIPT_DIR/../terraform/environments/dev"
+TF_DIR="$SCRIPT_DIR/../../terraform/environments/dev"
 OUTPUT_NAME="instance_public_ip"
 GH_SECRET_NAME="EC2_HOST"
 REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
